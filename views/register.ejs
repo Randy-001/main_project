@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   
+    <title>Home Authentication</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-sm-4">
+                <form action="/register" method="POST">
+                    <div class="form-group">
+                        <label for="firstname">First Name</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname"  placeholder="First Name">
+                       
+                      </div>
+                      <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name">
+                       
+                      </div>
+                      <div class="form-group">
+                        <label for="username">User Name</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                       
+                      </div>
+                     
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        
+                      </div>
+                      
+                     
+                      
+                      <div class="form-group">
+                        <label for="email">E-Mail</label>
+                        <input type="email" class="form-control" name="email" id="email" >
+                
+                      </div>
+                      <div class="form-group" id="geolocation">
+                        
+                        <button type="button" class="btn btn-primary btn-lg btn-block">Add Geolocation</button><br>
+                        <input type="text" id="sentlocation" name="geolocation" class="form-control" name="email" readonly >
+                      </div>
+                      <div class="form-group">
+                        <select id="sq" name="secqn" class="form-control">
+                            <option value="What city were you born in?">What city were you born in?</option>
+                            <option value="What is your oldest sibling's middle name?" >What is your oldest sibling's middle name?</option>
+                            <option value="What was the first concert you attended?" >What was the first concert you attended?</option>
+                            <option value="What was the make and model of your first car?">What was the make and model of your first car?</option>
+                            <option value="In what city or town did your parents meet?" >In what city or town did your parents meet?</option>
+    
+                          </select>
+                          <br>
+                          <input type="text" id="sqans" name="secqnvalue" class="form-control">
+                          
+                      </div>
+                      
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  </form>
+    
+            </div>
+          
+
+        </div>
+       
+        
+
+    </div>
+   
+</body>
+<script>
+const l=document.getElementById("geolocation")
+    console.log(l)
+    l.addEventListener('click',(e)=>{
+        navigator.geolocation.getCurrentPosition(position => {
+                        const { latitude, longitude } = position.coords;
+                        const g=document.getElementById("sentlocation")
+                        g.value=latitude+","+longitude
+                        console.log(latitude,longitude)
+                      });
+       })
+       
+       </script>
+</html>
