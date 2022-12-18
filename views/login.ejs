@@ -31,12 +31,21 @@
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                         
                       </div>
+                      <div class="form-group" id="geolocation">
+                        
+                        <button type="button" class="btn btn-primary btn-lg btn-block">Add Geolocation</button><br>
+                        <input type="text" id="sentlocation" name="geolocation" class="form-control" name="email" readonly >
+                      </div>
                       
                    
                       
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                   </form>
+                  <h4><a href="http://localhost:3000/security">Forgot password?</a></h4>
     
+            </div>
+            <div>
+
             </div>
           
 
@@ -47,5 +56,18 @@
     </div>
    
 </body>
+<script>
+  const l=document.getElementById("geolocation")
+    console.log(l)
+    l.addEventListener('click',(e)=>{
+        navigator.geolocation.getCurrentPosition(position => {
+                        const { latitude, longitude } = position.coords;
+                        console.log(position.coords.accuracy)
+                        const g=document.getElementById("sentlocation")
+                        g.value=latitude+","+longitude
+                        console.log(latitude,longitude)
+                      });
+       })
+</script>
 
 </html>

@@ -21,6 +21,10 @@ const userschema=new Schema({
         type:String,
         required:true,
     },
+    phonenumber:{
+        type:String,
+        required:true,
+    },
     geolocation:{
         type:String,
         required:true,
@@ -30,6 +34,14 @@ const userschema=new Schema({
         required:true,
     },
     secqnvalue:{
+        type:String,
+        required:true,
+    },
+    secqn1:{
+        type:String,
+        required:true,
+    },
+    secqnvalue1:{
         type:String,
         required:true,
     },

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-sm-4">
+                     
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="email">
+                            <br>
+                            <button type="button" id="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+                        
+                      </div>
+                      <div id="auth" hidden>
+                        <form action="/login" method="POST">
+                    
+                     
+                            <div class="form-group">
+                                <label for="secqn"><%=qn1%></label>
+                                <input type="text" class="form-control" id="secqn" name="secqn" >
+                            
+                          </div>
+                          <div class="form-group">
+                            <label for="secqn1"><%=qn2%></label>
+                            <input type="text" class="form-control" id="secqn1" name="secqn1" >
+                        
+                      </div>
+                            
+                         
+                            
+                          <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                        </form>
+                      </div>
+               
+                  
+    
+            </div>
+            <div>
+
+            </div>
+          
+
+        </div>
+       
+        
+
+    </div>
+   
+</body>
+<script>
+    document.getElementById("button").addEventListener('click',()=>{
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type':
+                    'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({email:document.getElementById("email").value})
+        }
+  let fetchRes = fetch("/forgot",options);
+        fetchRes.then(res =>
+            res.json())
+            .then(d => {
+              console.log(d)
+              document.getElementById("auth").hidden=false
+                
+            })
+    })
+</script>
+</html>

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app=express()
+const bodyparser = require('body-parser')
 const authroutes=require('./Routes/Authroutes')
 const dburi="mongodb+srv://Ranjith:ranvi40700@minihackathon.jyfgb.mongodb.net/?retryWrites=true&w=majority"
 mongoose.connect(dburi, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -10,7 +11,8 @@ mongoose.connect(dburi, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log(err));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyparser.urlencoded({extended:false}))
+app.use(bodyparser.json())
 app.use('/',authroutes);
 app.use((req, res) => {
     res.status(404).render('404', { title: '404' });
