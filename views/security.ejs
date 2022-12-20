@@ -7,6 +7,7 @@
     <title>Forgot password</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 </head>
 <body>
     <div class="container">
@@ -22,32 +23,44 @@
                         
                       </div>
                       <div id="auth" hidden>
-                        <form action="/login" method="POST">
+                       
                     
                      
                             <div class="form-group">
-                                <label for="secqn"><%=qn1%></label>
-                                <input type="text" class="form-control" id="secqn" name="secqn" >
+                                <label id="qn1" for="secqn"></label>
+                                <input type="text" class="form-control" id="vl1" name="secqn" >
                             
                           </div>
                           <div class="form-group">
-                            <label for="secqn1"><%=qn2%></label>
-                            <input type="text" class="form-control" id="secqn1" name="secqn1" >
+                            <label for="secqn1" id="qn2"></label>
+                            <input type="text" class="form-control" id="vl2" name="secqn1" >
+                            <button type="button" onclick="check()" class="btn btn-primary btn-lg btn-block">Submit</button>
                         
                       </div>
-                            
-                         
-                            
-                          <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                      </div>
+                      <div id="pass" hidden>
+                      
+                        <form onsubmit="pass(event)" action="/change" method="POST">
+                            <div class="form-group">
+                              <label for="password">New Password</label>
+                              <input type="password" class="form-control" id="password" name="password">
+                             
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="repassword">Reenter Password</label>
+                                <input type="password" class="form-control" id="repassword" name="repassword">
+                               
+                              </div>
+                
+                          <button type="submit"  class="btn btn-primary btn-lg btn-block">Submit</button>
                         </form>
+                        
                       </div>
                
                   
     
-            </div>
-            <div>
-
-            </div>
+         
           
 
         </div>
@@ -58,6 +71,7 @@
    
 </body>
 <script>
+    var vl1,vl2;
     document.getElementById("button").addEventListener('click',()=>{
         let options = {
             method: 'POST',
@@ -72,9 +86,38 @@
             res.json())
             .then(d => {
               console.log(d)
+              vl1=d.vl1
+              vl2=d.vl2
+              document.getElementById("qn1").innerHTML=d.qn1
+              document.getElementById("qn2").innerHTML=d.qn2
               document.getElementById("auth").hidden=false
-                
             })
     })
+    function check(){
+        if(vl1===document.getElementById("vl1").value && vl2===document.getElementById("vl2").value){
+            document.getElementById("auth").hidden=true
+            document.getElementById("pass").hidden=false
+            console.log(document.getElementById("vl1").value,document.getElementById("vl2").value)
+        }
+        else{
+            alert("Incorrect values!!")
+        }
+    }
+    function pass(event){
+        event.preventDefault()
+        if(document.getElementById("password").value===document.getElementById("repassword").value){
+            var myPassword = "mfaauth1234@";
+            var pass=document.getElementById("password")
+            var repass=document.getElementById("repassword")
+            pass.value=CryptoJS.AES.encrypt(pass.value, myPassword);
+            repass.value=CryptoJS.AES.encrypt(repass.value, myPassword);
+            event.currentTarget.submit();
+        }
+        else{
+            alert("Incorrect Password!!")
+        }
+       
+    }
+
 </script>
 </html>

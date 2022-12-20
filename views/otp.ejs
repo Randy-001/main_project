@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+    
   <title>OTP</title>
 </head>
 
@@ -16,14 +18,14 @@
         <div class="alert alert-danger" role="alert" id="w" hidden>
           A simple danger alert—check it out!
         </div>
-        <form  action="#" method="POST">
+        <form  onsubmit="validate(event)" action="#" method="POST">
           <div class="form-group">
             <label for="otp">OTP</label>
             <input type="text" class="form-control" id="otp" name="otp">
            
           </div>
           
-          <button  id="s" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+          <button   type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
           </form>
           </div>
       </div>
@@ -36,6 +38,7 @@
   function loaded(){
   let number='<%-phonenumber%>'
   let loc='<%-location%>'
+  var myPassword = "mfaauth1234@";
   let options = {
             method: 'POST',
             headers: {
@@ -48,25 +51,20 @@
         fetchRes.then(res =>
             res.json())
             .then(d => {
-              console.log(d)
-                 OTP=d.otp
+              //console.log(d)
+                 OTP=CryptoJS.AES.decrypt(d.otp, myPassword);
             })
           }
-
-  document.getElementById("s").addEventListener('click',function(event){
+function validate(event){
     event.preventDefault()
-    console.log(OTP)
+    OTP=OTP.toString(CryptoJS.enc.Utf8);
     if(document.getElementById("otp").value===OTP){
      
-      return true
+      event.currentTarget.submit();
     }
     else{
-      const myTimeout = setTimeout(myGreeting, 5000);
-      document.getElementById("w").hidden=true
+      alert("Incorrect Otp!!")
     }
-  })
-  function myGreeting(){
-    document.getElementById("w").hidden=false
   }
 
 </script>

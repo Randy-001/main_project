@@ -5,13 +5,19 @@
     margin: 0;
     box-sizing: border-box;
 }
-body{
-    height: 100vh;
-    background: linear-gradient(
-        135deg,
-        #61d954,
-        #2ebf75
-    );
+.progress-bar-danger {
+    background-color: #e90f10;
+}
+.progress-bar-warning{
+    background-color: #ffad00;
+}
+.progress-bar-success{
+    background-color: #02b502;
+}
+.show-pass{
+    position: absolute;
+    top:41%;
+    right: 8%;
 }
 .wrapper{
     background-color: #ffffff;
@@ -67,4 +73,22 @@ p{
     width: 100%;
     text-align: center;
     margin-top: 20px;
+}
+#placeHolder{
+    display:none;
+  }
+  canvas{
+    
+    /*width:200px;*/
+  }
+  #dBtn{
+    display:none;
+  }
+  
+  h1#heading{
+    font-family: 'Major Mono Display', monospace;
+  
+  }
+.progress {
+    height: 3px !important;
 }

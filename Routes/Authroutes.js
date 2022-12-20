@@ -11,4 +11,6 @@ router.post('/otpfunction',authcontroller.otpfunction)
 router.post('/genotp',authcontroller.genotp)
 router.get('/security',authcontroller.security)
 router.post('/forgot',authcontroller.forgot)
+router.post('/change',authcontroller.change)
+router.post('/fetchlocation',authcontroller.fetchlocation)
 module.exports=router;
