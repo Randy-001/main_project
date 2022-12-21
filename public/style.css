@@ -92,3 +92,47 @@ p{
 .progress {
     height: 3px !important;
 }
+form input[type="text"] {
+  /* Style the text input box */
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+form textarea {
+  /* Style the textarea element */
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+}
+
+form label {
+  /* Style the form labels */
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+form button[type="submit"] {
+  /* Style the submit button */
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+  /* Style the submit button when hovered over */
+  background-color: #45a049;
+}
