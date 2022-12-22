@@ -87,11 +87,18 @@
             res.json())
             .then(d => {
               console.log(d)
-              vl1=d.vl1
+              if(d.val===false){
+                alert("No such email found")
+              }
+              else{
+                vl1=d.vl1
               vl2=d.vl2
               document.getElementById("qn1").innerHTML=d.qn1
               document.getElementById("qn2").innerHTML=d.qn2
               document.getElementById("auth").hidden=false
+
+              }
+             
             })
     })
     function check(){
@@ -101,7 +108,7 @@
             console.log(document.getElementById("vl1").value,document.getElementById("vl2").value)
         }
         else{
-            alert("Incorrect values!!")
+            alert("Incorrect Security Answers")
         }
     }
     function pass(event){
@@ -115,7 +122,7 @@
             event.currentTarget.submit();
         }
         else{
-            alert("Incorrect Password!!")
+            alert("Passwords should match!!")
         }
        
     }

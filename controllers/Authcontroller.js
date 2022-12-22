@@ -18,7 +18,7 @@ function decrypt(data) {
   return decrypted.toString(CryptoJS.enc.Utf8);
 }
 const home=(req,res)=>{
-    res.render('login',{unique:makeid(6)});
+    res.render('login',{unique:makeid(6),correct:true});
 }
 const register=(req,res)=>{
     req.body.password=decrypt(req.body.password)
@@ -33,6 +33,7 @@ const register=(req,res)=>{
     })
     .catch(err => {
       console.log(err);
+      res.redirect('/')
     });
 }
 function makeid(length) {
@@ -61,12 +62,24 @@ const login=(req,res)=>{
         }
         else{
             //console.log(docs)
-            let g=docs[0].geolocation.split(",")
+            if(docs.length===0)
+            {
+                res.render('login',{correct:false,unique:makeid(6)})
+            }
+            else{
+                let g=docs[0].geolocation.split(",")
             let f=req.body.geolocation.split(",")
             let dis=distance(parseFloat(g[0]),parseFloat(g[1]),parseFloat(f[0]),parseFloat(f[1]))
             console.log(dis)
+            if(dis<50){
+       
+                res.render('otp',{location:f[0],phonenumber:docs[0].phonenumber})
+            }
+            else{
+                res.render('404')
+            }
            
-                res.render('otp',{location:g[0],phonenumber:docs[0].phonenumber})
+            }
             
         }
         
@@ -123,7 +136,7 @@ const change=(req,res)=>{
         }
         else{
             console.log(docs)
-            res.render('login')
+            res.render('login',{unique:makeid(6),correct:true})
         }
     })
 }
@@ -133,11 +146,17 @@ const forgot=(req,res)=>{
             console.log(err);
         }
         else{
-            qn1=docs[0].secqn
-            qn2=docs[0].secqn1
-            vl1=docs[0].secqnvalue
-            vl2=docs[0].secqnvalue1
-            res.json({qn1:qn1,qn2:qn2,vl1:vl1,vl2:vl2})
+            if(docs.length!==0){
+                qn1=docs[0].secqn
+                qn2=docs[0].secqn1
+                vl1=docs[0].secqnvalue
+                vl2=docs[0].secqnvalue1
+                res.json({qn1:qn1,qn2:qn2,vl1:vl1,vl2:vl2,val:true})
+            }
+            else{
+                res.json({val:false}) 
+            }
+           
         }
     })
 }
@@ -178,6 +197,10 @@ function distance(lat1, lon1, lat2, lon2) {
 		return dist*1609.344;
 	}
 }
+const welcome=(req,res)=>{
+    
+    res.render('welcome')
+}
 
 module.exports={
     home,
@@ -189,5 +212,6 @@ module.exports={
     security,
     forgot,
     change,
-    fetchlocation
+    fetchlocation,
+    welcome
 }

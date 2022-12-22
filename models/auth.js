@@ -20,6 +20,7 @@ const userschema=new Schema({
     email:{
         type:String,
         required:true,
+        unique:true,
     },
     phonenumber:{
         type:String,

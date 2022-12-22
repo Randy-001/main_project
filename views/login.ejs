@@ -72,6 +72,7 @@
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
                   <h4><a href="http://localhost:3000/security">Forgot password?</a></h4>
+                  <h4><a href="http://localhost:3000/signup">New User?</a></h4>
     
             </div>
             <div>
@@ -103,6 +104,11 @@
 </script>
 </body>
 <script>
+  var loc;
+  var cr='<%-correct%>'
+  if(cr===false){
+    alert("Incorrect Password")
+  }
   const l=document.getElementById("geolocation")
     console.log(l)
     l.addEventListener('click',(e)=>{
@@ -112,7 +118,14 @@
                         const { latitude, longitude } = position.coords;
                         console.log(position.coords.accuracy)
                         const g=document.getElementById("sentlocation")
-                        g.value=latitude+","+longitude
+                        loc=latitude+","+longitude
+                        let l=loc.split(",")
+                        let arr=[]
+                        for(let i=0;i<2;i++){   
+                          arr.push(l[i].split(".")[0])
+                          arr[i]=arr[i]+".XXXXXXX"
+                        }
+                        g.value=arr[0]+","+arr[1]
                         console.log(latitude,longitude)
                       });
        })
@@ -121,6 +134,7 @@
     var pass=document.getElementById("password")
     var myPassword = "mfaauth1234@";
     pass.value = CryptoJS.AES.encrypt(pass.value, myPassword);
+    document.getElementById("sentlocation").value=loc
     console.log(pass.value)
     event.currentTarget.submit();
 
@@ -146,7 +160,14 @@ document.getElementById("touchphone").addEventListener('click',()=>{
             .then(d => {
               console.log(d)
               if(d.find){
-                document.getElementById("sentlocation").value=d.geolocation
+                loc=d.geolocation
+                let l=loc.split(",")
+                let arr=[]
+                for(let i=0;i<2;i++){   
+                  arr.push(l[i].split(".")[0])
+                  arr[i]=arr[i]+".XXXXX"
+                }
+                document.getElementById("sentlocation").value=arr[0]+","+arr[1]
               }
               else{
                 alert("Get the geolocation from phone!!")

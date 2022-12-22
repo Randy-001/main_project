@@ -202,6 +202,7 @@
 </script>
 </body>
 <script>
+  var loc;
 const l=document.getElementById("geolocation")
    
     console.log(l)
@@ -211,7 +212,14 @@ const l=document.getElementById("geolocation")
         navigator.geolocation.getCurrentPosition(position => {
                         const { latitude, longitude } = position.coords;
                         const g=document.getElementById("sentlocation")
-                        g.value=latitude+","+longitude
+                        loc=latitude+","+longitude
+                        let l=loc.split(",")
+                        let arr=[]
+                        for(let i=0;i<2;i++){   
+                          arr.push(l[i].split(".")[0])
+                          arr[i]=arr[i]+".XXXXXXX"
+                        }
+                        g.value=arr[0]+","+arr[1]
                         console.log(latitude,longitude)
                       });
        })
@@ -288,6 +296,7 @@ function validate(event){
   event.preventDefault()
   var pass=document.getElementById("password")
   pass.value = CryptoJS.AES.encrypt(pass.value, myPassword);
+  document.getElementById("sentlocation").value=loc
   console.log(pass.value)
   event.currentTarget.submit();
 }
@@ -298,6 +307,7 @@ document.getElementById("phone").addEventListener('click',()=>{
   document.getElementById("touchphone").style.display="block"
      document.getElementById("geolocation").hidden=true
 })
+
 document.getElementById("touchphone").addEventListener('click',()=>{
   let options = {
             method: 'POST',
@@ -313,7 +323,15 @@ document.getElementById("touchphone").addEventListener('click',()=>{
             .then(d => {
               console.log(d)
               if(d.find){
-                document.getElementById("sentlocation").value=d.geolocation
+                loc=d.geolocation
+                let l=loc.split(",")
+                let arr=[]
+                for(let i=0;i<2;i++){   
+                  arr.push(l[i].split(".")[0])
+                  arr[i]=arr[i]+".XXXXX"
+                }
+                document.getElementById("sentlocation").value=arr[0]+","+arr[1]
+
               }
               else{
                 alert("Get the geolocation from phone!!")
@@ -350,7 +368,6 @@ function myFunction(show){
 function checkStrength(password) {
     let strength = 0;
 
-    //If password contains both lower and uppercase characters
     if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
         strength += 1;
         lowUpperCase.classList.remove('fa-circle');
@@ -359,7 +376,7 @@ function checkStrength(password) {
         lowUpperCase.classList.add('fa-circle');
         lowUpperCase.classList.remove('fa-check');
     }
-    //If it has numbers and characters
+
     if (password.match(/([0-9])/)) {
         strength += 1;
         number.classList.remove('fa-circle');
@@ -368,7 +385,6 @@ function checkStrength(password) {
         number.classList.add('fa-circle');
         number.classList.remove('fa-check');
     }
-    //If it has one special character
     if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) {
         strength += 1;
         specialChar.classList.remove('fa-circle');
@@ -377,7 +393,6 @@ function checkStrength(password) {
         specialChar.classList.add('fa-circle');
         specialChar.classList.remove('fa-check');
     }
-    //If password is greater than 7
     if (password.length > 7) {
         strength += 1;
         eightChar.classList.remove('fa-circle');
@@ -387,7 +402,7 @@ function checkStrength(password) {
         eightChar.classList.remove('fa-check');   
     }
 
-    // If value is less than 2
+  
     if (strength < 2) {
         passwordStrength.classList.remove('progress-bar-warning');
         passwordStrength.classList.remove('progress-bar-success');
