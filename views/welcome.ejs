@@ -81,6 +81,38 @@ h1 {
         <h1>WELCOME</h1>
         
       </div>
+    <script>
+      window.addEventListener('load',()=>{
+        let setid = setInterval(()=>{
+          let mkid='<%-id%>'
+          
+            let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type':
+                    'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({jwt:mkid})
+        }
+          fetch("http://localhost:3000/logout",options)
+  
+          .then(res=>res.json())
+          .then(res=>{
+            console.log(res)
+            if(!res.hitapi && res.validate=="yes")
+            {
+              clearInterval(setid)
+            }
+           else if(!res.hitapi && res.validate=="no")
+           {
+            window.location.reload();
+           }
+
+          })
+          
+        },3000)
+      })
+    </script>
     
 </body>
 </html>

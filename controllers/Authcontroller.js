@@ -2,8 +2,18 @@ const Auth=require('../models/auth');
 const Location=require('../models/location');
 const hash=require('../Hashing')
 var gen = require('random-seed');
+const jwt=require('jsonwebtoken')
 const CryptoJS = require('crypto-js');
+const hbs = require('nodemailer-express-handlebars')
+const nodemailer = require('nodemailer')
+const path = require('path')
+const Jwt=require('../models/jwt');
 
+
+
+let jwttoken;
+let id;
+let mkid;
 require('dotenv').config()
 const key = 'mfaauth1234@';
 
@@ -18,7 +28,14 @@ function decrypt(data) {
   return decrypted.toString(CryptoJS.enc.Utf8);
 }
 const home=(req,res)=>{
+    
+      
     res.render('login',{unique:makeid(6),correct:true});
+}
+const token=(id)=>{
+    return jwt.sign({id},'main_project',{
+        expiresIn:1000*60*60*24
+    })
 }
 const register=(req,res)=>{
     req.body.password=decrypt(req.body.password)
@@ -29,6 +46,9 @@ const register=(req,res)=>{
     .then(result => {
         console.log(result)
         let h=req.body.geolocation.split(",")
+        id=result._id;
+        jwttoken=token(result._id)
+        res.cookie('jwt',jwttoken,{httponly:true})
       res.render('otp',{location:h[0],phonenumber:req.body.phonenumber});
     })
     .catch(err => {
@@ -67,12 +87,15 @@ const login=(req,res)=>{
                 res.render('login',{correct:false,unique:makeid(6)})
             }
             else{
+                id=docs[0]._id;
                 let g=docs[0].geolocation.split(",")
             let f=req.body.geolocation.split(",")
             let dis=distance(parseFloat(g[0]),parseFloat(g[1]),parseFloat(f[0]),parseFloat(f[1]))
             console.log(dis)
             if(dis<50){
        
+                jwttoken=token(docs[0]._id)
+                res.cookie('jwt',jwttoken,{httponly:true})
                 res.render('otp',{location:f[0],phonenumber:docs[0].phonenumber})
             }
             else{
@@ -112,6 +135,7 @@ const otpfunction= (req,res)=>{
     const client = require('twilio')(accountSid, authToken);
     var digits = '0123456789';
     OTP = '';
+    console.log(process.env.TWILIO_ACCOUNT_SID)
     for (let i = 0; i < 6; i++ ) {
         OTP += digits[Math.floor(Math.random() * 10)];
     }
@@ -197,9 +221,99 @@ function distance(lat1, lon1, lat2, lon2) {
 		return dist*1609.344;
 	}
 }
+
+const validateUser=(req,res)=>{
+    console.log(req.body)
+    req.body.jwt=mkid;
+    const jwtschema= new Jwt(req.body);
+    jwtschema.save()
+    .then(result => {
+        console.log(result)
+        
+    })
+    .catch(err => {
+      console.log(err);
+     
+    });
+    res.json({success:true})
+}
 const welcome=(req,res)=>{
+    console.log(res.cookie)
+    mkid=makeid(7);
+    Auth.findById({_id:id},(err,docs)=>{
+        if(err)
+        {
+            console.log(err)
+        }
+        else{
+            console.log(docs)
+           
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: '1905039cse@cit.edu.in',
+                  pass: 'ranvi40700'
+                }
+              });
+              const handlebarOptions = {
+                viewEngine: {
+                    partialsDir: path.resolve('./views/'),
+                    defaultLayout: false,
+                },
+                viewPath: path.resolve('./views/'),
+            };
+            transporter.use('compile', hbs(handlebarOptions))
+        
+              var mailOptions = {
+                from:"1905039cse@cit.edu.in",
+                            to:docs.email,
+                             subject:"Notifying the user",
+                        
+                             template:'email'
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+        
+        }
+    })
     
-    res.render('welcome')
+    
+    
+
+    res.render('welcome',{id:mkid})
+}
+
+const logout =(req,res)=>{
+    Jwt.find(req.body,(err,result)=>{
+        if(err)
+        {
+            console.log(err)
+        }
+        else{
+            if(result.length==0)
+            {
+                res.json({hitapi:true,validate:"no"})
+            }
+            else{
+                
+                if(result[0].validate=="no"){
+                    res.cookie('jwt',"",{httponly:true})
+                    res.json({hitapi:false,validate:"no"})
+                }
+                else{
+                    res.json({hitapi:false,validate:result[0].validate})
+                }
+                
+            }
+        }
+    })
+
 }
 
 module.exports={
@@ -213,5 +327,7 @@ module.exports={
     forgot,
     change,
     fetchlocation,
-    welcome
+    welcome,
+    validateUser,
+    logout
 }
