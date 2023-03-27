@@ -224,7 +224,6 @@ function distance(lat1, lon1, lat2, lon2) {
 
 const validateUser=(req,res)=>{
     console.log(req.body)
-    req.body.jwt=mkid;
     const jwtschema= new Jwt(req.body);
     jwtschema.save()
     .then(result => {
@@ -269,7 +268,10 @@ const welcome=(req,res)=>{
                             to:docs.email,
                              subject:"Notifying the user",
                         
-                             template:'email'
+                             template:'email',
+                             context:{
+                                mkid:mkid
+                            }
               };
               
               transporter.sendMail(mailOptions, function(error, info){
