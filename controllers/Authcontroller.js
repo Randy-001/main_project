@@ -15,6 +15,8 @@ let jwttoken;
 let id;
 let mkid;
 require('dotenv').config()
+const TWILIO_ACCOUNT_SID="ACa668086efe21f9b9b0cdc3603b9c31d0"
+const TWILIO_AUTH_TOKEN="cb75995ae83e3fd5329d84140b8525b4"
 const key = 'mfaauth1234@';
 
 function encrypt(data) {
@@ -111,8 +113,8 @@ const login=(req,res)=>{
 }
 const genotp=(req,res)=>{
                 var ot=gen.create(req.body.location)(1000000)
-                const accountSid = process.env.TWILIO_ACCOUNT_SID;
-                const authToken = process.env.TWILIO_AUTH_TOKEN;
+                const accountSid = TWILIO_ACCOUNT_SID;
+                const authToken = TWILIO_AUTH_TOKEN;
                 const client = require('twilio')(accountSid, authToken);
 
                 client.messages
@@ -130,12 +132,12 @@ const genotp=(req,res)=>{
 }
 const otpfunction= (req,res)=>{
    
-    const accountSid = process.env.TWILIO_ACCOUNT_SID;
-    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const accountSid = TWILIO_ACCOUNT_SID;
+    const authToken = TWILIO_AUTH_TOKEN;
     const client = require('twilio')(accountSid, authToken);
     var digits = '0123456789';
     OTP = '';
-    console.log(process.env.TWILIO_ACCOUNT_SID)
+    console.log(TWILIO_ACCOUNT_SID)
     for (let i = 0; i < 6; i++ ) {
         OTP += digits[Math.floor(Math.random() * 10)];
     }

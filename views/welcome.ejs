@@ -94,7 +94,7 @@ h1 {
             },
             body: JSON.stringify({jwt:mkid})
         }
-          fetch("http://localhost:3000/logout",options)
+          fetch("/logout",options)
   
           .then(res=>res.json())
           .then(res=>{
