@@ -8,6 +8,7 @@ const hbs = require('nodemailer-express-handlebars')
 const nodemailer = require('nodemailer')
 const path = require('path')
 const Jwt=require('../models/jwt');
+const jwt_decode = require('jwt-decode');
 
 
 
@@ -237,9 +238,11 @@ const validateUser=(req,res)=>{
     res.json({success:true})
 }
 const welcome=(req,res)=>{
-    console.log(res.cookie)
+    console.log(req.cookies.jwt)
     mkid=makeid(7);
-    Auth.findById({_id:id},(err,docs)=>{
+    var decoded = jwt_decode(req.cookies.jwt);
+    //console.log("Decoded   ",decoded)
+    Auth.findById({_id:decoded.id},(err,docs)=>{
         if(err)
         {
             console.log(err)
