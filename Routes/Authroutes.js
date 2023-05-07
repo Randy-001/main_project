@@ -16,4 +16,5 @@ router.post('/fetchlocation',authcontroller.fetchlocation)
 router.get('/welcome',[Auth],authcontroller.welcome)
 router.post('/validateUser',authcontroller.validateUser)
 router.post('/logout',authcontroller.logout)
+router.get('/form/:mkid',authcontroller.form)
 module.exports=router;

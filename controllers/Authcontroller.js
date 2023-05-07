@@ -119,7 +119,7 @@ const genotp=(req,res)=>{
                 client.messages
                 .create({
                     body: 'Your OTP for registering the account is '+ot,
-                    from: '+15134509830',
+                    from: '+12705618355',
                     to: "+91"+req.body.phonenumber
                 })
                 .then(message => {
@@ -143,7 +143,7 @@ const otpfunction= (req,res)=>{
     client.messages
       .create({
         body: 'Your OTP for registering the account is '+OTP,
-        from: '+15134509830',
+        from: '+12705618355',
         to: '+91'+req.body.phonenumber
       })
       .then(message => {console.log(message.sid)
@@ -320,6 +320,12 @@ const logout =(req,res)=>{
     })
 
 }
+const form =(req,res)=>{
+    const id = req.params.mkid
+    console.log(id)
+    res.render('form',{mkid:id})
+
+}
 
 module.exports={
     home,
@@ -334,5 +340,6 @@ module.exports={
     fetchlocation,
     welcome,
     validateUser,
-    logout
+    logout,
+    form
 }

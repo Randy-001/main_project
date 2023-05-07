@@ -20,7 +20,10 @@
             This is to notify you that you have suuccessfully logged in.If it's not you kindly submit the form.
         </h4>
         </p>
+        
+        <br>
         <form id='radio-form' method="POST" action="http://localhost:3000/validateUser">
+        
             <select name="validate">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -29,6 +32,7 @@
             <input  style="display: none" type="text" name="jwt" id="mkid" value={{mkid}}>
             <button type="submit">Submit</button>
         </form>
+        <p>If you are unable to complete the form in Gmail, you can <a href="http://localhost:3000/form/{{mkid}}" target="_blank">open it in your browser</a>.</p>
         
         
         
