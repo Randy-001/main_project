@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css"/>
     <title>Document</title>
 </head>
 <body>
-    <form id='radio-form' method="POST" action="http://www.surya.website/validateUser">
-        <select name="validate">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-        </select>
-        <label style="display: none" for="mkid" >Unique-Id</label>
-        <input  style="display: none" type="text" name="jwt" id="mkid" value=<%= mkid %> />
-        <button type="submit">Submit</button>
-    </form>
+    <div id="form-container">
+        <p id="form-text">
+            Please submit your response 
+        </p>
+        <form id='radio-form' method="POST" action="http://www.surya.website/validateUser">
+            <select id='radio-input' name="validate">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <label style="display: none" for="mkid" >Unique-Id</label>
+            <input  style="display: none" type="text" name="jwt" id="mkid" value=<%= mkid %> />
+            <button id='radio-submit' type="submit">Submit</button>
+        </form>
+
+    </div>
+   
     <script>
         
         let elements = ['yes','no']
